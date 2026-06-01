@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Magnet Homes — War Room</title>
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#00FF94;--g2:#00CC76;--g3:rgba(0,255,148,.08);--g4:rgba(0,255,148,.15);
+  --p:#B8A9FF;--p2:rgba(184,169,255,.08);
+  --gold:#FFD166;--red:#FF4D6D;--red2:rgba(255,77,109,.1);
+  --bg:#070A0E;--bg2:#0D1117;--bg3:#131920;--bg4:#1A2230;
+  --bdr:rgba(255,255,255,.06);--bdr2:rgba(255,255,255,.1);--bdr3:rgba(0,255,148,.2);
+  --txt:#E8F0F8;--txt2:#7A8FA6;--txt3:#3A4F6A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+
+/* SCANLINE */
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:999;}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,148,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,148,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+
+/* TICKER */
+.ticker{position:relative;z-index:10;background:rgba(0,255,148,.06);border-bottom:1px solid var(--bdr3);padding:6px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-block;animation:tick 25s linear infinite;}
+.ticker-inner span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);padding:0 2rem;}
+.ticker-inner span.hl{color:var(--g);}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:100;background:rgba(7,10,14,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:.875rem 1.5rem;display:flex;align-items:center;justify-content:space-between;}
+.hdr-left{display:flex;align-items:center;gap:14px;}
+.logo-box{position:relative;width:42px;height:42px;border:1px solid var(--bdr3);border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(0,255,148,.06);}
+.logo-box::before{content:'';position:absolute;inset:-1px;border-radius:10px;background:linear-gradient(135deg,var(--g),transparent);opacity:.3;z-index:-1;}
+.logo-txt{font-family:'Teko',sans-serif;font-size:18px;font-weight:700;color:var(--g);letter-spacing:.05em;}
+.brand{display:flex;flex-direction:column;gap:1px;}
+.brand-name{font-family:'Teko',sans-serif;font-size:22px;font-weight:600;color:var(--txt);letter-spacing:.06em;line-height:1;}
+.brand-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:.12em;text-transform:uppercase;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.live-badge{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:10px;color:var(--g);background:rgba(0,255,148,.08);border:1px solid var(--bdr3);border-radius:20px;padding:4px 10px;}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,255,148,.4);}50%{opacity:.8;box-shadow:0 0 0 5px rgba(0,255,148,0);}}
+.upd{font-family:'Space Mono',monospace;font-size:10px;color:var(--txt3);}
+.ref-btn{background:transparent;border:1px solid var(--bdr2);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.04em;transition:all .15s;}
+.ref-btn:hover{border-color:var(--g);color:var(--g);background:var(--g3);}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:1.5rem;position:relative;z-index:1;}
+
+/* SECTION LABEL */
+.slbl{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.slbl::after{content:'';flex:1;height:1px;background:var(--bdr);}
+.slbl span{color:var(--g);}
+
+/* GOAL HERO */
+.goal-hero{position:relative;border:1px solid var(--bdr3);border-radius:20px;padding:1.75rem 2rem;margin-bottom:1.5rem;overflow:hidden;background:linear-gradient(135deg,rgba(0,255,148,.04) 0%,rgba(184,169,255,.02) 100%);}
+.goal-hero::before{content:'$100K';position:absolute;right:-20px;top:-20px;font-family:'Teko',sans-serif;font-size:160px;font-weight:700;color:rgba(0,255,148,.03);line-height:1;pointer-events:none;letter-spacing:-.02em;}
+.goal-grid{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
+.goal-lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:6px;}
+.goal-earned{font-family:'Teko',sans-serif;font-size:72px;font-weight:700;color:var(--g);line-height:1;letter-spacing:-.01em;text-shadow:0 0 60px rgba(0,255,148,.3);}
+.goal-sub{font-size:13px;color:var(--txt2);margin-top:4px;margin-bottom:16px;}
+.bar-track{height:8px;background:var(--bg4);border-radius:4px;overflow:hidden;margin-bottom:6px;}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--g),#00FFD1);transition:width 1.2s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px rgba(0,255,148,.4);}
+.bar-labels{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);}
+.goal-stats{display:flex;flex-direction:column;gap:14px;text-align:right;min-width:120px;}
+.gs{border:1px solid var(--bdr);border-radius:12px;padding:10px 14px;background:var(--bg3);}
+.gs-v{font-family:'Teko',sans-serif;font-size:32px;font-weight:600;color:var(--gold);line-height:1;}
+.gs-l{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.5rem;}
+.met{background:var(--bg2);border:1px solid var(--bdr);border-radius:14px;padding:.875rem 1rem;position:relative;overflow:hidden;transition:border-color .2s;}
+.met:hover{border-color:var(--bdr2);}
+.met::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s;}
+.met:hover::before{opacity:1;}
+.met.mg::before{background:var(--g);}
+.met.mp::before{background:var(--p);}
+.met.mo::before{background:var(--gold);}
+.met.mr::before{background:var(--red);}
+.met-l{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.met-v{font-family:'Teko',sans-serif;font-size:34px;font-weight:600;line-height:1;margin-bottom:2px;}
+.met-v.g{color:var(--g);}
+.met-v.p{color:var(--p);}
+.met-v.o{color:var(--gold);}
+.met-v.r{color:var(--red);}
+.met-s{font-size:11px;color:var(--txt3);}
+.met-prog{margin-top:6px;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden;}
+.met-prog-fill{height:100%;border-radius:2px;transition:width .8s ease;}
+
+/* GRID LAYOUTS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.g13{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:1.5rem;}
+.card{background:var(--bg2);border:1px solid var(--bdr);border-radius:16px;padding:1rem 1.25rem;}
+
+/* PIPELINE */
+.pipe-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;margin-bottom:5px;background:var(--bg3);transition:background .15s;}
+.pipe-item:hover{background:var(--bg4);}
+.pipe-n{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);width:14px;text-align:right;flex-shrink:0;}
+.pipe-name{font-size:12px;color:var(--txt2);flex:1;}
+.pipe-bar{width:60px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;flex-shrink:0;}
+.pipe-bar-fill{height:100%;border-radius:2px;transition:width .8s ease;}
+.pipe-count{font-family:'Teko',sans-serif;font-size:18px;font-weight:600;width:28px;text-align:right;flex-shrink:0;color:var(--txt);}
+
+/* CALLERS */
+.caller{background:var(--bg2);border:1px solid var(--bdr);border-radius:16px;padding:1rem 1.25rem;margin-bottom:10px;position:relative;overflow:hidden;}
+.caller::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.caller.d::before{background:var(--g);}
+.caller.y::before{background:var(--p);}
+.caller-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.c-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Teko',sans-serif;font-size:20px;font-weight:700;flex-shrink:0;}
+.c-name{font-size:15px;font-weight:600;color:var(--txt);}
+.c-role{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;}
+.c-status{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;padding:3px 8px;border-radius:20px;}
+.c-status.on{background:rgba(0,255,148,.1);color:var(--g);border:1px solid var(--bdr3);}
+.c-status.new{background:rgba(184,169,255,.1);color:var(--p);border:1px solid rgba(184,169,255,.2);}
+.c-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
+.cg{background:var(--bg3);border-radius:8px;padding:6px 8px;}
+.cg-l{font-family:'Space Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px;}
+.cg-v{font-family:'Teko',sans-serif;font-size:22px;font-weight:600;line-height:1;}
+.prog-wrap{display:flex;align-items:center;gap:8px;}
+.prog-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);flex-shrink:0;width:50px;text-align:right;}
+.prog-track{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:3px;transition:width .8s ease;}
+
+/* LIVE FEED */
+.feed{display:flex;flex-direction:column;gap:0;max-height:320px;overflow-y:auto;}
+.feed::-webkit-scrollbar{width:3px;}
+.feed::-webkit-scrollbar-track{background:transparent;}
+.feed::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px;}
+.feed-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);animation:feedIn .4s ease;}
+@keyframes feedIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.feed-item:last-child{border-bottom:none;}
+.feed-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.feed-body{flex:1;min-width:0;}
+.feed-txt{font-size:12px;color:var(--txt2);line-height:1.4;}
+.feed-txt strong{color:var(--txt);}
+.feed-time{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);flex-shrink:0;margin-top:2px;}
+
+/* CLOSERS */
+.closer-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);}
+.closer-row:last-child{border-bottom:none;}
+.cl-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Teko',sans-serif;font-size:18px;flex-shrink:0;}
+.cl-name{font-size:13px;font-weight:600;color:var(--txt);}
+.cl-role{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;}
+.cl-deals{font-family:'Teko',sans-serif;font-size:26px;font-weight:600;color:var(--g);}
+.cl-earn{font-family:'Space Mono',monospace;font-size:10px;color:var(--txt3);}
+
+/* TARGETS */
+.tgt-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--bdr);}
+.tgt-row:last-child{border-bottom:none;}
+.tgt-l{font-size:12px;color:var(--txt2);}
+.tgt-r{display:flex;align-items:center;gap:8px;}
+.tgt-v{font-family:'Teko',sans-serif;font-size:20px;font-weight:600;color:var(--txt);}
+.tgt-g{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);}
+.tgt-s{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:.06em;}
+.ts-b{background:var(--red2);color:var(--red);}
+.ts-o{background:rgba(255,209,102,.1);color:var(--gold);}
+.ts-a{background:rgba(0,255,148,.1);color:var(--g);}
+
+/* LOG DEAL */
+.log-inputs{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;}
+.li-group{display:flex;flex-direction:column;gap:4px;}
+.li-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;}
+.li-input{background:var(--bg3);border:1px solid var(--bdr2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--txt);outline:none;font-family:'Outfit',sans-serif;transition:border-color .15s;}
+.li-input:focus{border-color:var(--g);}
+.li-select{background:var(--bg3);border:1px solid var(--bdr2);border-radius:8px;padding:8px 12px;font-size:13px;color:var(--txt);outline:none;font-family:'Outfit',sans-serif;}
+.log-btn{background:var(--g);border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;color:#000;cursor:pointer;font-family:'Outfit',sans-serif;letter-spacing:.04em;transition:all .15s;white-space:nowrap;}
+.log-btn:hover{background:#00FFD1;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,255,148,.3);}
+.deal-entry{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--bg3);border-radius:8px;margin-top:6px;animation:feedIn .4s ease;}
+.de-addr{font-size:12px;color:var(--txt2);flex:1;}
+.de-amt{font-family:'Teko',sans-serif;font-size:18px;color:var(--g);}
+.de-closer{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);text-transform:uppercase;}
+.de-date{font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);}
+
+/* ERR */
+.err{background:rgba(255,77,109,.06);border:1px solid rgba(255,77,109,.15);border-radius:8px;padding:6px 12px;font-family:'Space Mono',monospace;font-size:10px;color:var(--red);margin-bottom:8px;display:none;}
+
+footer{text-align:center;padding:1.25rem;border-top:1px solid var(--bdr);margin-top:1rem;position:relative;z-index:1;}
+.fq{font-style:italic;font-weight:500;font-size:12px;color:var(--txt3);margin-bottom:4px;}
+.fb{font-family:'Teko',sans-serif;font-size:14px;letter-spacing:.16em;color:var(--txt3);}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="hl">CASH MAGNET HOMES</span><span>WAR ROOM</span><span class="hl">JUNE 2026</span><span>$100K OR BUST</span><span class="hl">DANYAL + YUSUF DIALING</span><span>750 DIALS/DAY</span><span class="hl">FIND IT</span><span>LOCK IT</span><span class="hl">FLIP IT</span><span>NO EMOTION — JUST MATH</span><span class="hl">7 DEALS TO WIN</span><span>MARTIN + ZACK CLOSING</span><span class="hl">CASH MAGNET HOMES</span><span>WAR ROOM</span><span class="hl">JUNE 2026</span><span>$100K OR BUST</span><span class="hl">DANYAL + YUSUF DIALING</span><span>750 DIALS/DAY</span><span class="hl">FIND IT</span><span>LOCK IT</span><span class="hl">FLIP IT</span><span>NO EMOTION — JUST MATH</span><span class="hl">7 DEALS TO WIN</span><span>MARTIN + ZACK CLOSING</span>
+  </div>
+</div>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="logo-box"><div class="logo-txt">CM</div></div>
+    <div class="brand">
+      <div class="brand-name">Cash Magnet Homes</div>
+      <div class="brand-sub">War Room · June 2026 · $100K Month</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <div class="upd" id="lastUpd">Connecting...</div>
+    <button class="ref-btn" onclick="loadAll()">↻ Refresh</button>
+    <div class="live-badge"><div class="pulse"></div>LIVE</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- GOAL HERO -->
+  <div class="goal-hero">
+    <div class="goal-grid">
+      <div>
+        <div class="goal-lbl">June 2026 — Revenue Goal</div>
+        <div class="goal-earned" id="heroEarned">$0</div>
+        <div class="goal-sub" id="heroSub">$0 of $100,000 — Let's get it</div>
+        <div class="bar-track"><div class="bar-fill" id="goalBar" style="width:0%"></div></div>
+        <div class="bar-labels"><span>$0</span><span>$25K</span><span>$50K</span><span>$75K</span><span>$100K 🔥</span></div>
+      </div>
+      <div class="goal-stats">
+        <div class="gs"><div class="gs-v" id="heroDeals">0</div><div class="gs-l">Deals Closed</div></div>
+        <div class="gs"><div class="gs-v" id="heroDays">30</div><div class="gs-l">Days Left</div></div>
+        <div class="gs"><div class="gs-v" id="heroNeeded">7</div><div class="gs-l">Still Needed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="slbl"><span>●</span> Live numbers</div>
+  <div class="metrics">
+    <div class="met mg">
+      <div class="met-l">Total Dials Today</div>
+      <div class="met-v g" id="m_dials">—</div>
+      <div class="met-s">Target: 750/day</div>
+      <div class="met-prog"><div class="met-prog-fill" id="m_dials_p" style="width:0%;background:var(--g);"></div></div>
+    </div>
+    <div class="met mp">
+      <div class="met-l">Contacts Reached</div>
+      <div class="met-v p" id="m_contacts">—</div>
+      <div class="met-s">Live connects</div>
+      <div class="met-prog"><div class="met-prog-fill" id="m_contacts_p" style="width:0%;background:var(--p);"></div></div>
+    </div>
+    <div class="met mg">
+      <div class="met-l">Hot Leads</div>
+      <div class="met-v g" id="m_leads">—</div>
+      <div class="met-s">Sent to closers</div>
+      <div class="met-prog"><div class="met-prog-fill" id="m_leads_p" style="width:0%;background:var(--g);"></div></div>
+    </div>
+    <div class="met mo">
+      <div class="met-l">Pipeline Active</div>
+      <div class="met-v o" id="m_pipeline">—</div>
+      <div class="met-s">Open opportunities</div>
+    </div>
+    <div class="met mo">
+      <div class="met-l">Offers Made</div>
+      <div class="met-v o" id="m_offers">—</div>
+      <div class="met-s">This month</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- PIPELINE -->
+    <div class="card">
+      <div class="slbl"><span>●</span> GHL Pipeline — Live</div>
+      <div class="err" id="ghlErr">GHL connection failed. Will retry.</div>
+      <div id="pipeList"><div style="font-family:'Space Mono',monospace;font-size:11px;color:var(--txt3);padding:1rem 0;text-align:center;">Connecting to GHL...</div></div>
+    </div>
+
+    <!-- LIVE FEED -->
+    <div class="card">
+      <div class="slbl"><span>●</span> Live Team Activity Feed</div>
+      <div class="feed" id="liveFeed"></div>
+    </div>
+  </div>
+
+  <!-- CALLERS -->
+  <div class="slbl"><span>●</span> Callers — BatchDialer Live</div>
+  <div class="err" id="bdErr">BatchDialer connection failed. Will retry.</div>
+  <div class="g2" style="margin-bottom:1.5rem;">
+    <div class="caller d">
+      <div class="caller-top">
+        <div class="c-av" style="background:rgba(0,255,148,.1);color:var(--g);">D</div>
+        <div><div class="c-name">Danyal</div><div class="c-role">Caller · Seat 1 · $3/hr</div></div>
+        <div class="c-status on">● DIALING</div>
+      </div>
+      <div class="c-grid">
+        <div class="cg"><div class="cg-l">Dials</div><div class="cg-v" style="color:var(--g);" id="d_dials">—</div></div>
+        <div class="cg"><div class="cg-l">Contacts</div><div class="cg-v" style="color:var(--txt);" id="d_contacts">—</div></div>
+        <div class="cg"><div class="cg-l">Hot Leads</div><div class="cg-v" style="color:var(--g);" id="d_leads">—</div></div>
+        <div class="cg"><div class="cg-l">Connect %</div><div class="cg-v" style="color:var(--gold);" id="d_rate">—</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-lbl" id="d_prog_lbl">0/375</div>
+        <div class="prog-track"><div class="prog-fill" id="d_prog" style="width:0%;background:var(--g);box-shadow:0 0 8px rgba(0,255,148,.4);"></div></div>
+      </div>
+    </div>
+    <div class="caller y">
+      <div class="caller-top">
+        <div class="c-av" style="background:rgba(184,169,255,.1);color:var(--p);">Y</div>
+        <div><div class="c-name">Yusuf</div><div class="c-role">Caller · Seat 2 · Day 1</div></div>
+        <div class="c-status new">★ NEW</div>
+      </div>
+      <div class="c-grid">
+        <div class="cg"><div class="cg-l">Dials</div><div class="cg-v" style="color:var(--p);" id="y_dials">—</div></div>
+        <div class="cg"><div class="cg-l">Contacts</div><div class="cg-v" style="color:var(--txt);" id="y_contacts">—</div></div>
+        <div class="cg"><div class="cg-l">Hot Leads</div><div class="cg-v" style="color:var(--p);" id="y_leads">—</div></div>
+        <div class="cg"><div class="cg-l">Connect %</div><div class="cg-v" style="color:var(--gold);" id="y_rate">—</div></div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-lbl" id="y_prog_lbl">0/375</div>
+        <div class="prog-track"><div class="prog-fill" id="y_prog" style="width:0%;background:var(--p);box-shadow:0 0 8px rgba(184,169,255,.4);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- CLOSERS + TARGETS -->
+    <div>
+      <div class="card" style="margin-bottom:14px;">
+        <div class="slbl"><span>●</span> Closer Performance — June</div>
+        <div class="closer-row">
+          <div class="cl-av" style="background:rgba(0,255,148,.1);color:var(--g);">M</div>
+          <div style="flex:1;"><div class="cl-name">Martin</div><div class="cl-role">Primary Closer</div></div>
+          <div style="text-align:right;"><div class="cl-deals" id="m_deals">0 deals</div><div class="cl-earn" id="m_earn">$0 earned</div></div>
+        </div>
+        <div class="closer-row">
+          <div class="cl-av" style="background:rgba(255,209,102,.1);color:var(--gold);">Z</div>
+          <div style="flex:1;"><div class="cl-name">Zack</div><div class="cl-role">Backup Closer</div></div>
+          <div style="text-align:right;"><div class="cl-deals" id="z_deals">0 deals</div><div class="cl-earn" id="z_earn">$0 earned</div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 0;margin-top:4px;border-top:1px solid var(--bdr2);">
+          <div style="font-size:12px;font-weight:600;color:var(--txt);">Total closed this month</div>
+          <div style="font-family:'Teko',sans-serif;font-size:24px;font-weight:600;color:var(--g);" id="totalClosed">$0</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="slbl"><span>●</span> Daily Targets</div>
+        <div class="tgt-row"><div class="tgt-l">Total dials</div><div class="tgt-r"><div class="tgt-v" id="t_dials">0</div><div class="tgt-g">/ 750</div><div class="tgt-s ts-b" id="ts_dials">BEHIND</div></div></div>
+        <div class="tgt-row"><div class="tgt-l">Contacts reached</div><div class="tgt-r"><div class="tgt-v" id="t_contacts">0</div><div class="tgt-g">/ 75</div><div class="tgt-s ts-b" id="ts_contacts">BEHIND</div></div></div>
+        <div class="tgt-row"><div class="tgt-l">Hot leads</div><div class="tgt-r"><div class="tgt-v" id="t_leads">0</div><div class="tgt-g">/ 5</div><div class="tgt-s ts-b" id="ts_leads">BEHIND</div></div></div>
+        <div class="tgt-row"><div class="tgt-l">Offers made</div><div class="tgt-r"><div class="tgt-v" id="t_offers">0</div><div class="tgt-g">/ 3</div><div class="tgt-s ts-b" id="ts_offers">BEHIND</div></div></div>
+        <div class="tgt-row"><div class="tgt-l">Deals closed (month)</div><div class="tgt-r"><div class="tgt-v" id="t_deals">0</div><div class="tgt-g">/ 7</div><div class="tgt-s ts-b" id="ts_deals">BEHIND</div></div></div>
+      </div>
+    </div>
+
+    <!-- LOG DEAL -->
+    <div class="card">
+      <div class="slbl"><span>●</span> Log a Closed Deal 🔥</div>
+      <div class="log-inputs">
+        <div class="li-group" style="flex:2;min-width:160px;">
+          <div class="li-lbl">Property Address</div>
+          <input class="li-input" type="text" id="dealAddr" placeholder="1234 Oak St, Jacksonville FL">
+        </div>
+        <div class="li-group" style="min-width:110px;">
+          <div class="li-lbl">Assignment Fee ($)</div>
+          <input class="li-input" type="number" id="dealAmt" placeholder="15000" style="width:100%;">
+        </div>
+        <div class="li-group" style="min-width:100px;">
+          <div class="li-lbl">Closer</div>
+          <select class="li-select" id="dealCloser">
+            <option value="martin">Martin</option>
+            <option value="zack">Zack</option>
+          </select>
+        </div>
+        <button class="log-btn" onclick="logDeal()">🔥 Log Deal</button>
+      </div>
+      <div id="dealLog" style="margin-top:10px;max-height:220px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;"></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.1em;">June total revenue</div>
+        <div style="font-family:'Teko',sans-serif;font-size:32px;font-weight:700;color:var(--g);text-shadow:0 0 20px rgba(0,255,148,.3);" id="juneTotalBig">$0</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="fq">"Discipline closes deals. Consistency builds empires."</div>
+  <div class="fb">Cash Magnet Homes · War Room · June 2026</div>
+</footer>
+
+<script>
+var GHL_KEY='pit-36618f98-145e-4840-9a80-54159c1cfd8d';
+var GHL_LOC='04Knz6dROUbRHdLQdGKn';
+var GHL_PIPE='YS3VYTmff5mWfR0ewzV2';
+var BD_KEY='afc5eda5-c2fc-4ae4-9754-c92002b2d19b';
+var GOAL=100000,DEAL_TGT=7,DIAL_TGT=750;
+
+var STAGES=[
+  {n:'New Hot Lead',c:'#00FF94'},{n:'Martin Working',c:'#4ADE80'},{n:'Zack Working',c:'#FFD166'},
+  {n:'Offer Made',c:'#FF9F43'},{n:'Negotiating',c:'#B8A9FF'},{n:'Under Contract',c:'#00FF94'},
+  {n:'Dispo',c:'#4ADE80'},{n:'Buyer Found',c:'#FFD166'},{n:'Closing',c:'#FF7A6E'},{n:'Closed',c:'#00FF94'}
+];
+
+var deals=JSON.parse(localStorage.getItem('cmh_deals2')||'[]');
+var feedItems=[];
+
+function fmt(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function now(){return new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+
+function setTgt(id,val,tgt){
+  var el=document.getElementById(id);if(!el)return;
+  var p=val/tgt;
+  if(p>=1){el.textContent='ON TRACK';el.className='tgt-s ts-a';}
+  else if(p>=0.7){el.textContent='CLOSE';el.className='tgt-s ts-o';}
+  else{el.textContent='BEHIND';el.className='tgt-s ts-b';}
+}
+
+function addFeed(icon,txt){
+  var t=now();
+  feedItems.unshift({icon:icon,txt:txt,time:t});
+  if(feedItems.length>30)feedItems=feedItems.slice(0,30);
+  renderFeed();
+}
+
+function renderFeed(){
+  var el=document.getElementById('liveFeed');
+  el.innerHTML=feedItems.slice(0,20).map(function(f){
+    return '<div class="feed-item"><div class="feed-icon">'+f.icon+'</div><div class="feed-body"><div class="feed-txt">'+f.txt+'</div></div><div class="feed-time">'+f.time+'</div></div>';
+  }).join('');
+}
+
+function updateGoal(){
+  var total=deals.reduce(function(a,d){return a+d.amt;},0);
+  var mDeals=deals.filter(function(d){return d.closer==='martin';});
+  var zDeals=deals.filter(function(d){return d.closer==='zack';});
+  var pct=Math.min(100,(total/GOAL)*100);
+  var dLeft=Math.max(0,30-new Date().getDate()+1);
+  var dNeeded=Math.max(0,DEAL_TGT-deals.length);
+
+  document.getElementById('heroEarned').textContent=fmt(total);
+  document.getElementById('heroSub').textContent=fmt(total)+' of $100,000 — '+(pct>=100?'🔥 GOAL REACHED!':'Keep pushing, '+dNeeded+' deals to go');
+  document.getElementById('goalBar').style.width=pct+'%';
+  document.getElementById('heroDeals').textContent=deals.length;
+  document.getElementById('heroDays').textContent=dLeft;
+  document.getElementById('heroNeeded').textContent=dNeeded;
+  document.getElementById('m_deals').textContent=mDeals.length+' deals';
+  document.getElementById('m_earn').textContent=fmt(mDeals.length*500)+' earned';
+  document.getElementById('z_deals').textContent=zDeals.length+' deals';
+  document.getElementById('z_earn').textContent=fmt(zDeals.length*500)+' earned';
+  document.getElementById('totalClosed').textContent=fmt(total);
+  document.getElementById('juneTotalBig').textContent=fmt(total);
+  document.getElementById('t_deals').textContent=deals.length;
+  setTgt('ts_deals',deals.length,DEAL_TGT);
+
+  // Deal log
+  var logEl=document.getElementById('dealLog');
+  logEl.innerHTML=deals.slice().reverse().map(function(d){
+    return '<div class="deal-entry"><span style="font-size:14px;">🔥</span><span class="de-addr">'+d.addr+'</span><span class="de-amt">'+fmt(d.amt)+'</span><span class="de-closer">'+d.closer+'</span><span class="de-date">'+d.date+'</span></div>';
+  }).join('');
+}
+
+function logDeal(){
+  var addr=document.getElementById('dealAddr').value.trim();
+  var amt=parseFloat(document.getElementById('dealAmt').value)||0;
+  var closer=document.getElementById('dealCloser').value;
+  if(!addr||!amt){alert('Enter address and amount.');return;}
+  deals.push({addr:addr,amt:amt,closer:closer,date:new Date().toLocaleDateString()});
+  localStorage.setItem('cmh_deals2',JSON.stringify(deals));
+  addFeed('🔥','<strong>DEAL CLOSED</strong> — '+addr+' — '+fmt(amt)+' ('+closer+')');
+  document.getElementById('dealAddr').value='';
+  document.getElementById('dealAmt').value='';
+  updateGoal();
+}
+
+async function loadGHL(){
+  try{
+    var res=await fetch('https://services.leadconnectorhq.com/opportunities/search?pipeline_id='+GHL_PIPE+'&location_id='+GHL_LOC+'&limit=100',{
+      headers:{'Authorization':'Bearer '+GHL_KEY,'Version':'2021-07-28','Content-Type':'application/json'}
+    });
+    if(!res.ok)throw new Error('GHL '+res.status);
+    var data=await res.json();
+    var opps=data.opportunities||data.data||[];
+    var sc={};var total=0;
+    opps.forEach(function(o){
+      var sn=o.stage&&o.stage.name?o.stage.name:'Unknown';
+      sc[sn]=(sc[sn]||0)+1;total++;
+    });
+    document.getElementById('m_pipeline').textContent=total;
+    var offersMade=sc['Offer Made']||0;
+    document.getElementById('m_offers').textContent=offersMade;
+    document.getElementById('t_offers').textContent=offersMade;
+    setTgt('ts_offers',offersMade,3);
+    var maxC=Math.max(1,Math.max.apply(null,STAGES.map(function(s){return sc[s.n]||0;})));
+    document.getElementById('pipeList').innerHTML=STAGES.map(function(s,i){
+      var c=sc[s.n]||0,w=Math.round((c/maxC)*100);
+      return '<div class="pipe-item"><div class="pipe-n">'+(i+1)+'</div><div class="pipe-name">'+s.n+'</div><div class="pipe-bar"><div class="pipe-bar-fill" style="width:'+w+'%;background:'+s.c+';"></div></div><div class="pipe-count">'+c+'</div></div>';
+    }).join('');
+    document.getElementById('ghlErr').style.display='none';
+    if(total>0)addFeed('📋','GHL pipeline synced — <strong>'+total+' active opportunities</strong>');
+  }catch(e){
+    document.getElementById('ghlErr').style.display='block';
+    document.getElementById('pipeList').innerHTML='<div style="font-family:\'Space Mono\',monospace;font-size:10px;color:var(--txt3);padding:1rem 0;text-align:center;">Awaiting connection...</div>';
+    addFeed('⚠️','GHL sync failed — retrying in 3 minutes');
+  }
+}
+
+async function loadBD(){
+  try{
+    var res=await fetch('https://app.batchdialer.com/api/v1/campaigns',{
+      headers:{'x-api-key':BD_KEY,'Content-Type':'application/json'}
+    });
+    if(!res.ok)throw new Error('BD '+res.status);
+    var data=await res.json();
+    var camps=data.data||data.campaigns||data||[];
+    var tD=0,tC=0,tL=0,dD=0,dC=0,dL=0,yD=0,yC=0,yL=0;
+    if(Array.isArray(camps)&&camps.length){
+      camps.forEach(function(c){
+        var d=c.totalCalls||c.total_calls||c.dials||0;
+        var ct=c.totalContacts||c.total_contacts||c.contacts||0;
+        var l=c.totalLeads||c.total_leads||c.leads||0;
+        tD+=d;tC+=ct;tL+=l;
+        var n=(c.agentName||c.agent_name||c.name||'').toLowerCase();
+        if(n.includes('dan')||n.includes('danyal')){dD+=d;dC+=ct;dL+=l;}
+        else if(n.includes('yus')){yD+=d;yC+=ct;yL+=l;}
+        else{dD+=Math.floor(d/2);dC+=Math.floor(ct/2);dL+=Math.floor(l/2);yD+=Math.ceil(d/2);yC+=Math.ceil(ct/2);yL+=Math.ceil(l/2);}
+      });
+    }
+    document.getElementById('m_dials').textContent=tD||'—';
+    document.getElementById('m_dials_p').style.width=Math.min(100,Math.round((tD/DIAL_TGT)*100))+'%';
+    document.getElementById('m_contacts').textContent=tC||'—';
+    document.getElementById('m_contacts_p').style.width=Math.min(100,Math.round((tC/75)*100))+'%';
+    document.getElementById('m_leads').textContent=tL||'—';
+    document.getElementById('m_leads_p').style.width=Math.min(100,Math.round((tL/5)*100))+'%';
+    document.getElementById('t_dials').textContent=tD;
+    document.getElementById('t_contacts').textContent=tC;
+    document.getElementById('t_leads').textContent=tL;
+    setTgt('ts_dials',tD,DIAL_TGT);
+    setTgt('ts_contacts',tC,75);
+    setTgt('ts_leads',tL,5);
+    var dRate=dD>0?Math.round((dC/dD)*100)+'%':'0%';
+    var yRate=yD>0?Math.round((yC/yD)*100)+'%':'0%';
+    document.getElementById('d_dials').textContent=dD||'0';
+    document.getElementById('d_contacts').textContent=dC||'0';
+    document.getElementById('d_leads').textContent=dL||'0';
+    document.getElementById('d_rate').textContent=dRate;
+    document.getElementById('d_prog').style.width=Math.min(100,Math.round((dD/375)*100))+'%';
+    document.getElementById('d_prog_lbl').textContent=dD+'/375';
+    document.getElementById('y_dials').textContent=yD||'0';
+    document.getElementById('y_contacts').textContent=yC||'0';
+    document.getElementById('y_leads').textContent=yL||'0';
+    document.getElementById('y_rate').textContent=yRate;
+    document.getElementById('y_prog').style.width=Math.min(100,Math.round((yD/375)*100))+'%';
+    document.getElementById('y_prog_lbl').textContent=yD+'/375';
+    document.getElementById('bdErr').style.display='none';
+    addFeed('📞','BatchDialer synced — <strong>'+tD+' dials</strong>, '+tC+' contacts, '+tL+' hot leads today');
+  }catch(e){
+    document.getElementById('bdErr').style.display='block';
+    addFeed('⚠️','BatchDialer sync failed — retrying in 3 minutes');
+  }
+}
+
+async function loadAll(){
+  document.getElementById('lastUpd').textContent='Refreshing...';
+  addFeed('🔄','Dashboard refreshed by Siraj');
+  await Promise.all([loadGHL(),loadBD()]);
+  updateGoal();
+  document.getElementById('lastUpd').textContent='Updated '+now();
+}
+
+// Startup feed messages
+addFeed('🚀','<strong>War Room activated</strong> — June 2026 campaign is LIVE');
+addFeed('👤','<strong>Yusuf</strong> joined the team — Seat 2 activated');
+addFeed('🎯','Monthly goal set — <strong>$100,000</strong> by June 30');
+addFeed('📱','SMS campaign running — <strong>250/day</strong> outbound');
+
+loadAll();
+setInterval(loadAll,180000);
+</script>
+</body>
+</html>
