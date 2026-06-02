@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Magnet Homes — Deal Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--green:#00D084;--green-glow:rgba(0,208,132,.18);--green-light:rgba(0,208,132,.08);--purple:#9B8FFF;--purple-glow:rgba(155,143,255,.18);--purple-light:rgba(155,143,255,.08);--gold:#FFB830;--red:#FF5F57;--red-light:rgba(255,95,87,.1);--amber-light:rgba(255,184,48,.1);--bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);--text:#F0EDE4;--text2:#8A8680;--text3:#4A4844;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.ticker{background:var(--bg2);border-bottom:1px solid var(--border);padding:8px 0;overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-block;animation:ticker 32s linear infinite;}
+.ticker-inner span{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding:0 2rem;}
+.ticker-inner span.hl{color:var(--green);}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.hero{position:relative;padding:3rem 2rem 2.5rem;text-align:center;border-bottom:1px solid var(--border);overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(0,208,132,.12) 0%,transparent 70%);pointer-events:none;}
+.live-badge{position:absolute;top:1.25rem;right:1.5rem;display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);font-family:'DM Mono',monospace;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:4px 10px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--green);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:inline-block;width:30px;height:1px;background:var(--green);opacity:.5;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(42px,8vw,72px);letter-spacing:.06em;line-height:.95;margin-bottom:6px;}
+.hero-title span{color:var(--green);}
+.hero-subtitle{font-size:14px;color:var(--text2);margin-bottom:1.5rem;}
+.hero-quote{display:inline-block;font-style:italic;font-weight:600;font-size:15px;color:var(--gold);background:rgba(255,184,48,.06);border:1px solid rgba(255,184,48,.15);border-radius:8px;padding:8px 20px;}
+.main{max-width:920px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.motive-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem;}
+.motive-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.875rem 1rem;text-align:center;}
+.motive-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);line-height:1;margin-bottom:3px;}
+.motive-lbl{font-size:11px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;}
+.top-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.25rem;}
+.input-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.125rem 1.375rem;position:relative;overflow:hidden;}
+.input-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);opacity:0;transition:opacity .2s;}
+.input-card:focus-within::before{opacity:1;}
+.input-lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.input-wrap{display:flex;align-items:baseline;gap:3px;}
+.input-prefix{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--text3);}
+.big-input{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.02em;color:var(--text);background:transparent;border:none;outline:none;width:100%;caret-color:var(--green);}
+.big-input::placeholder{color:var(--text3);}
+.pct-strip{display:flex;gap:6px;margin-bottom:1rem;}
+.pct-btn{flex:1;padding:8px 6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text2);font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;}
+.pct-btn:hover{border-color:var(--border2);color:var(--text);}
+.pct-btn.active{background:var(--green);border-color:var(--green);color:#000;font-weight:700;}
+.fee-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:14px;}
+.fee-lbl{font-size:12px;color:var(--text2);flex-shrink:0;}
+input[type=range]{flex:1;accent-color:var(--green);cursor:pointer;}
+.fee-val{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);width:84px;text-align:right;flex-shrink:0;}
+.controls-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem;}
+.ctrl-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:center;gap:10px;}
+.ctrl-lbl{font-size:12px;color:var(--text2);flex:1;}
+.ctrl-input{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:5px 8px;font-size:13px;font-family:'DM Mono',monospace;color:var(--text);width:90px;text-align:right;outline:none;}
+.ctrl-input:focus{border-color:var(--green);}
+.ctrl-suffix{font-size:12px;color:var(--text3);}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.25rem;}
+.calc-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.calc-card:hover{transform:translateY(-2px);}
+.calc-card.cash:hover{box-shadow:0 8px 32px var(--green-glow);}
+.calc-card.nov:hover{box-shadow:0 8px 32px var(--purple-glow);}
+.calc-top{padding:1.125rem 1.375rem 1rem;border-bottom:1px solid var(--border);position:relative;}
+.calc-card.cash .calc-top::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--green);}
+.calc-card.nov .calc-top::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--purple);}
+.calc-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:8px;}
+.calc-card.cash .calc-badge{background:var(--green-light);color:var(--green);border:1px solid rgba(0,208,132,.2);}
+.calc-card.nov .calc-badge{background:var(--purple-light);color:var(--purple);border:1px solid rgba(155,143,255,.2);}
+.calc-lbl{font-size:11px;color:var(--text3);margin-bottom:4px;}
+.calc-big{font-family:'Bebas Neue',sans-serif;font-size:46px;letter-spacing:.02em;line-height:1;}
+.calc-big.green{color:var(--green);}
+.calc-big.purple{color:var(--purple);}
+.calc-big.bad{color:var(--red);}
+.calc-body{padding:1rem 1.375rem 1.125rem;}
+.br{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
+.br:last-of-type{border-bottom:none;}
+.br-l{font-size:13px;color:var(--text2);}
+.br-v{font-size:13px;font-weight:500;font-family:'DM Mono',monospace;}
+.pos{color:var(--green);}
+.neg{color:#FF7A6E;}
+.neu{color:var(--text);}
+.pur{color:var(--purple);}
+.result-br{display:flex;justify-content:space-between;align-items:center;padding:8px 0 0;margin-top:6px;border-top:1px solid var(--border2);}
+.result-br .br-l{color:var(--text);font-weight:600;font-size:13px;}
+.verdict{margin-top:10px;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;}
+.v-green{background:var(--green-light);color:var(--green);border:1px solid rgba(0,208,132,.2);}
+.v-amber{background:var(--amber-light);color:var(--gold);border:1px solid rgba(255,184,48,.2);}
+.v-red{background:var(--red-light);color:var(--red);border:1px solid rgba(255,95,87,.2);}
+.best-play{background:linear-gradient(135deg,rgba(0,208,132,.06) 0%,rgba(155,143,255,.04) 100%);border:1px solid rgba(0,208,132,.2);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.bp-eyebrow{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:4px;}
+.bp-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:.06em;}
+.bp-note{font-size:12px;color:var(--text2);margin-top:2px;}
+.bp-icon{font-size:36px;opacity:.6;}
+.slack-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.5rem;}
+.slack-hdr{padding:.875rem 1.375rem;border-bottom:1px solid var(--border);}
+.slack-hdr-title{font-size:12px;color:var(--text2);font-weight:500;}
+.slack-body{padding:1rem 1.375rem;}
+.slack-msg{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-family:'DM Mono',monospace;font-size:11.5px;color:var(--text2);line-height:1.85;white-space:pre-wrap;word-break:break-word;margin-bottom:12px;}
+.copy-btn{display:inline-flex;align-items:center;gap:7px;background:var(--green);border:none;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:700;letter-spacing:.04em;color:#000;cursor:pointer;font-family:'Barlow',sans-serif;text-transform:uppercase;transition:background .15s;}
+.copy-btn:hover{background:#00B872;}
+.copy-confirm{font-size:12px;color:var(--green);margin-left:12px;opacity:0;transition:opacity .3s;font-family:'DM Mono',monospace;}
+footer{text-align:center;padding:1.5rem;border-top:1px solid var(--border);}
+.footer-quote{font-style:italic;font-weight:600;font-size:13px;color:var(--text3);margin-bottom:6px;}
+.footer-brand{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:.16em;color:var(--text3);}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span>Cash Magnet Homes</span><span class="hl">Find It · Lock It · Flip It</span><span>Every Deal Counts</span><span class="hl">Run The Numbers First</span><span>No Emotion — Just Math</span><span class="hl">$100K Month Loading...</span>
+    <span>Cash Magnet Homes</span><span class="hl">Find It · Lock It · Flip It</span><span>Every Deal Counts</span><span class="hl">Run The Numbers First</span><span>No Emotion — Just Math</span><span class="hl">$100K Month Loading...</span>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="live-badge"><div class="dot"></div>Live Calculator</div>
+  <div class="hero-eyebrow">Wholesale Real Estate</div>
+  <div class="hero-title">Cash Magnet<br><span>Homes</span></div>
+  <div class="hero-subtitle">Deal Calculator — Run Every Number Before You Make Every Offer</div>
+  <div class="hero-quote">"No emotion. No guessing. Just math that makes money."</div>
+</div>
+
+<div class="main">
+
+  <div class="motive-strip">
+    <div class="motive-card"><div class="motive-num">$100K</div><div class="motive-lbl">Monthly Target</div></div>
+    <div class="motive-card"><div class="motive-num">7</div><div class="motive-lbl">Deals @ $15K to Win</div></div>
+    <div class="motive-card"><div class="motive-num">$1M+</div><div class="motive-lbl">12-Month Goal</div></div>
+  </div>
+
+  <div class="sec-label">Enter your numbers</div>
+  <div class="top-inputs">
+    <div class="input-card">
+      <div class="input-lbl">After Repair Value (ARV)</div>
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <input class="big-input" type="number" id="arv" value="189000" step="1000" oninput="calc()" placeholder="0">
+      </div>
+    </div>
+    <div class="input-card">
+      <div class="input-lbl">Estimated Repairs</div>
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <input class="big-input" type="number" id="rehab" value="25000" step="1000" oninput="calc()" placeholder="0">
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-label">Cash offer — investor discount</div>
+  <div class="pct-strip">
+    <button class="pct-btn" data-pct="60" onclick="setPct(this)">60%</button>
+    <button class="pct-btn" data-pct="65" onclick="setPct(this)">65%</button>
+    <button class="pct-btn active" data-pct="70" onclick="setPct(this)">70%</button>
+    <button class="pct-btn" data-pct="75" onclick="setPct(this)">75%</button>
+    <button class="pct-btn" data-pct="80" onclick="setPct(this)">80%</button>
+    <button class="pct-btn" data-pct="85" onclick="setPct(this)">85%</button>
+  </div>
+
+  <div class="fee-card">
+    <div class="fee-lbl">Assignment fee target</div>
+    <input type="range" id="fee" min="8000" max="20000" step="500" value="12000" oninput="calc()">
+    <div class="fee-val" id="feeVal">$12,000</div>
+  </div>
+
+  <div class="sec-label">Novation settings</div>
+  <div class="controls-row">
+    <div class="ctrl-card">
+      <div class="ctrl-lbl">Closing costs + realtor %</div>
+      <input class="ctrl-input" type="number" id="novCostPct" value="6" step="0.5" min="1" max="15" oninput="calc()">
+      <span class="ctrl-suffix">%</span>
+    </div>
+    <div class="ctrl-card">
+      <div class="ctrl-lbl">Desired profit (novation)</div>
+      <span class="ctrl-suffix">$</span>
+      <input class="ctrl-input" type="number" id="novDesiredProfit" value="20000" step="1000" oninput="calc()">
+    </div>
+  </div>
+
+  <div class="sec-label">Deal breakdown</div>
+  <div class="calc-grid">
+    <div class="calc-card cash">
+      <div class="calc-top">
+        <div class="calc-badge">💵 Cash Offer — MAO</div>
+        <div class="calc-lbl">Max allowable offer to seller</div>
+        <div class="calc-big green" id="cashMAOBig">—</div>
+      </div>
+      <div class="calc-body">
+        <div class="br"><span class="br-l">ARV</span><span class="br-v pos" id="c_arv">—</span></div>
+        <div class="br"><span class="br-l">× <span id="c_pct">70</span>%</span><span class="br-v neu" id="c_base">—</span></div>
+        <div class="br"><span class="br-l">− Repairs</span><span class="br-v neg" id="c_rehab">—</span></div>
+        <div class="br"><span class="br-l">− Assignment fee</span><span class="br-v neg" id="c_fee">—</span></div>
+        <div class="result-br"><span class="br-l">MAO</span><span class="br-v pos" id="c_mao">—</span></div>
+        <div class="result-br" style="border-top:none;padding-top:4px;"><span class="br-l" style="font-size:12px;color:var(--text3);">Your profit</span><span class="br-v pos" style="font-size:12px;" id="c_profit">—</span></div>
+        <div class="verdict" id="cashVerdict"></div>
+      </div>
+    </div>
+    <div class="calc-card nov">
+      <div class="calc-top">
+        <div class="calc-badge">📋 Novation — MAO</div>
+        <div class="calc-lbl">Max allowable offer to seller</div>
+        <div class="calc-big purple" id="novMAOBig">—</div>
+      </div>
+      <div class="calc-body">
+        <div class="br"><span class="br-l">ARV</span><span class="br-v pos" id="n_arv">—</span></div>
+        <div class="br"><span class="br-l">− Repairs</span><span class="br-v neg" id="n_rehab">—</span></div>
+        <div class="result-br" style="margin-bottom:6px;"><span class="br-l">As-is value (MLS list price)</span><span class="br-v neu" id="n_asis">—</span></div>
+        <div class="br" style="border-top:1px solid var(--border);padding-top:6px;"><span class="br-l">− Closing + realtor (<span id="n_pct">6.0</span>%)</span><span class="br-v neg" id="n_costs">—</span></div>
+        <div class="result-br" style="margin-bottom:6px;"><span class="br-l">After costs</span><span class="br-v neu" id="n_afterCosts">—</span></div>
+        <div class="br" style="border-top:1px solid var(--border);padding-top:6px;"><span class="br-l">− Desired profit</span><span class="br-v neg" id="n_desiredProfit">—</span></div>
+        <div class="result-br"><span class="br-l">MAO</span><span class="br-v pur" id="n_mao">—</span></div>
+        <div class="verdict" id="novVerdict"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="best-play">
+    <div>
+      <div class="bp-eyebrow">🎯 Recommended Strategy</div>
+      <div class="bp-val" id="bpVal">—</div>
+      <div class="bp-note" id="bpNote">—</div>
+    </div>
+    <div class="bp-icon" id="bpIcon">⚡</div>
+  </div>
+
+  <div class="sec-label">Team message</div>
+  <div class="slack-card">
+    <div class="slack-hdr"><div class="slack-hdr-title">Copy deal summary → paste straight into Slack</div></div>
+    <div class="slack-body">
+      <div class="slack-msg" id="slackMsg">Enter your numbers above to generate the deal summary.</div>
+      <button class="copy-btn" onclick="copySlack()">Copy to Slack</button>
+      <span class="copy-confirm" id="copyConfirm">✓ Copied!</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-quote">"Discipline closes deals. Consistency builds empires."</div>
+  <div class="footer-brand">Cash Magnet Homes · Wholesale · Est. 2024</div>
+</footer>
+
+<script>
+var activePct = 70;
+
+function setPct(el) {
+  document.querySelectorAll('.pct-btn').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  activePct = parseInt(el.dataset.pct);
+  calc();
+}
+
+function fmt(n) {
+  return '$' + Math.round(Math.max(0, n)).toLocaleString('en-US');
+}
+
+function setVerdict(id, val) {
+  var el = document.getElementById(id);
+  if (val <= 0) { el.textContent = '🚫 Does Not Work — Pass'; el.className = 'verdict v-red'; }
+  else if (val < 25000) { el.textContent = '⚠️ Thin Deal — Negotiate Hard'; el.className = 'verdict v-amber'; }
+  else if (val < 60000) { el.textContent = '✅ Solid Deal — Move Fast'; el.className = 'verdict v-green'; }
+  else { el.textContent = '🔥 Strong Deal — Lock It Up'; el.className = 'verdict v-green'; }
+}
+
+function calc() {
+  var arv = parseFloat(document.getElementById('arv').value) || 0;
+  var rehab = parseFloat(document.getElementById('rehab').value) || 0;
+  var fee = parseFloat(document.getElementById('fee').value) || 0;
+  var novCostPct = parseFloat(document.getElementById('novCostPct').value) || 6;
+  var desiredProfit = parseFloat(document.getElementById('novDesiredProfit').value) || 0;
+
+  document.getElementById('feeVal').textContent = fmt(fee);
+
+  // CASH
+  var pct = activePct / 100;
+  var cashBase = arv * pct;
+  var cashMAO = cashBase - rehab - fee;
+
+  document.getElementById('c_pct').textContent = activePct;
+  document.getElementById('c_arv').textContent = fmt(arv);
+  document.getElementById('c_base').textContent = fmt(cashBase);
+  document.getElementById('c_rehab').textContent = '−' + fmt(rehab);
+  document.getElementById('c_fee').textContent = '−' + fmt(fee);
+  document.getElementById('c_profit').textContent = fmt(fee);
+
+  var cashBig = document.getElementById('cashMAOBig');
+  var cMao = document.getElementById('c_mao');
+  if (cashMAO > 0) {
+    cashBig.textContent = fmt(cashMAO); cashBig.className = 'calc-big green';
+    cMao.textContent = fmt(cashMAO); cMao.className = 'br-v pos';
+  } else {
+    cashBig.textContent = 'NO DEAL'; cashBig.className = 'calc-big bad';
+    cMao.textContent = 'No deal'; cMao.className = 'br-v neg';
+  }
+  setVerdict('cashVerdict', cashMAO);
+
+  // NOVATION
+  var asis = arv - rehab;
+  var closingAmt = asis * (novCostPct / 100);
+  var afterCosts = asis - closingAmt;
+  var novMAO = afterCosts - desiredProfit;
+
+  document.getElementById('n_pct').textContent = novCostPct.toFixed(1);
+  document.getElementById('n_arv').textContent = fmt(arv);
+  document.getElementById('n_rehab').textContent = '−' + fmt(rehab);
+  document.getElementById('n_asis').textContent = fmt(asis);
+  document.getElementById('n_costs').textContent = '−' + fmt(closingAmt);
+  document.getElementById('n_afterCosts').textContent = fmt(afterCosts);
+  document.getElementById('n_desiredProfit').textContent = '−' + fmt(desiredProfit);
+
+  var novBig = document.getElementById('novMAOBig');
+  var nMao = document.getElementById('n_mao');
+  if (novMAO > 0) {
+    novBig.textContent = fmt(novMAO); novBig.className = 'calc-big purple';
+    nMao.textContent = fmt(novMAO); nMao.className = 'br-v pur';
+  } else {
+    novBig.textContent = 'NO DEAL'; novBig.className = 'calc-big bad';
+    nMao.textContent = 'No deal'; nMao.className = 'br-v neg';
+  }
+  setVerdict('novVerdict', novMAO);
+
+  // BEST PLAY
+  var bpVal = document.getElementById('bpVal');
+  var bpNote = document.getElementById('bpNote');
+  var bpIcon = document.getElementById('bpIcon');
+
+  if (cashMAO <= 0 && novMAO <= 0) {
+    bpVal.textContent = 'PASS ON THIS DEAL'; bpVal.style.color = '#FF5F57';
+    bpNote.textContent = "Numbers don't work either way — walk away"; bpIcon.textContent = '🚫';
+  } else if (cashMAO > 0 && novMAO <= 0) {
+    bpVal.textContent = 'CASH OFFER ONLY'; bpVal.style.color = '#00D084';
+    bpNote.textContent = "Novation doesn't pencil — go cash"; bpIcon.textContent = '💵';
+  } else if (novMAO > 0 && cashMAO <= 0) {
+    bpVal.textContent = 'NOVATION ONLY'; bpVal.style.color = '#9B8FFF';
+    bpNote.textContent = 'Cash offer too low — pitch the novation'; bpIcon.textContent = '📋';
+  } else {
+    var cashWins = cashMAO >= novMAO;
+    bpVal.textContent = cashWins ? 'CASH IS STRONGER' : 'NOVATION IS STRONGER';
+    bpVal.style.color = cashWins ? '#00D084' : '#9B8FFF';
+    bpNote.textContent = cashWins ? 'Lower MAO needed = more margin for you' : 'Higher MAO = easier seller conversation';
+    bpIcon.textContent = cashWins ? '💵' : '📋';
+  }
+
+  // SLACK
+  function pad(s, n) { return (s + ':').padEnd(n, ' '); }
+  var slack = [
+    '🏠 *CASH MAGNET HOMES — DEAL ANALYSIS*',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '',
+    pad('ARV', 22) + fmt(arv),
+    pad('Repairs', 22) + '−' + fmt(rehab),
+    '',
+    '[ 💵 CASH OFFER — ' + activePct + '% ]',
+    pad('ARV × ' + activePct + '%', 22) + fmt(cashBase),
+    pad('− Repairs', 22) + '−' + fmt(rehab),
+    pad('− Assignment Fee', 22) + '−' + fmt(fee),
+    pad('MAO', 22) + (cashMAO > 0 ? fmt(cashMAO) : 'NO DEAL'),
+    pad('Our Profit', 22) + fmt(fee),
+    '',
+    '[ 📋 NOVATION ]',
+    pad('ARV', 22) + fmt(arv),
+    pad('− Repairs', 22) + '−' + fmt(rehab),
+    pad('As-Is Value', 22) + fmt(asis),
+    pad('− Closing/Realtor', 22) + '−' + fmt(closingAmt) + ' (' + novCostPct + '%)',
+    pad('After Costs', 22) + fmt(afterCosts),
+    pad('− Desired Profit', 22) + '−' + fmt(desiredProfit),
+    pad('MAO', 22) + (novMAO > 0 ? fmt(novMAO) : 'NO DEAL'),
+    '',
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '🎯 BEST PLAY: ' + bpVal.textContent,
+    '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
+    '"No emotion. No guessing. Just math that makes money." — CMH'
+  ].join('\n');
+  document.getElementById('slackMsg').textContent = slack;
+}
+
+function copySlack() {
+  navigator.clipboard.writeText(document.getElementById('slackMsg').textContent).then(function() {
+    var c = document.getElementById('copyConfirm');
+    c.style.opacity = '1';
+    setTimeout(function(){ c.style.opacity = '0'; }, 2500);
+  });
+}
+
+calc();
+</script>
+</body>
+</html>
