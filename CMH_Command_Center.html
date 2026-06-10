@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Magnet Homes — Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1E90FF;--blue2:rgba(30,144,255,.08);--blue3:rgba(30,144,255,.15);--blueglow:0 0 30px rgba(30,144,255,.3);
+  --white:#FFFFFF;--white2:rgba(255,255,255,.06);--white3:rgba(255,255,255,.12);
+  --cyan:#FFD166;--cyan2:rgba(255,209,102,.06);
+  --red:#FF3D5A;--red2:rgba(255,61,90,.08);
+  --gold:#FFD166;--gold2:rgba(255,209,102,.08);
+  --bg:#030810;--bg2:#050C18;--bg3:#071020;--bg4:#091428;--bg5:#0B1830;
+  --bdr:rgba(30,144,255,.08);--bdr2:rgba(30,144,255,.18);--bdr3:rgba(30,144,255,.3);
+  --txt:#EEF6FF;--txt2:#5A7A9A;--txt3:#1A3050;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(30,144,255,.05) 0%,transparent 60%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:999;}
+
+/* TICKER */
+.ticker{overflow:hidden;white-space:nowrap;background:var(--bg2);border-bottom:1px solid var(--bdr3);padding:7px 0;position:relative;z-index:10;}
+.ticker-inner{display:inline-block;animation:tick 24s linear infinite;}
+.ticker-inner span{font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);padding:0 2rem;}
+.ticker-inner span.hl{color:var(--blue);text-shadow:0 0 8px rgba(30,144,255,.5);}
+.ticker-inner span.hot{color:var(--cyan);}
+@keyframes tick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* HEADER */
+.hdr{background:rgba(3,8,16,.96);border-bottom:1px solid var(--bdr3);padding:.875rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);}
+.hdr-l{display:flex;align-items:center;gap:16px;}
+.logo-wrap{display:flex;align-items:center;}
+.logo-bracket{font-family:'Share Tech Mono',monospace;font-size:30px;color:var(--blue);line-height:1;text-shadow:var(--blueglow);}
+.logo-txt{font-family:'Black Ops One',sans-serif;font-size:20px;color:var(--white);letter-spacing:.08em;padding:0 6px;}
+.brand-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.18em;text-transform:uppercase;margin-top:2px;}
+.hdr-center{text-align:center;}
+.month-label{font-family:'Black Ops One',sans-serif;font-size:26px;color:var(--blue);letter-spacing:.1em;text-shadow:var(--blueglow);line-height:1;}
+.month-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.18em;margin-top:2px;}
+.hdr-r{display:flex;align-items:center;gap:10px;}
+.live-wrap{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:.14em;}
+.blink{width:7px;height:7px;border-radius:50%;background:var(--blue);box-shadow:0 0 10px var(--blue);animation:blink 1.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.upd{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt3);}
+.ref-btn{background:transparent;border:1px solid var(--bdr2);padding:6px 14px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;color:var(--txt2);cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;}
+.ref-btn:hover{border-color:var(--blue);color:var(--blue);box-shadow:0 0 10px rgba(30,144,255,.2);}
+
+/* MAIN */
+.main{max-width:1200px;margin:0 auto;padding:1.5rem 2rem 4rem;position:relative;z-index:1;}
+.slbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--txt3);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.slbl::after{content:'';flex:1;height:1px;background:var(--bdr);}
+.slbl .b{color:var(--blue);}
+.slbl .c{color:var(--cyan);}
+
+/* HERO */
+.hero{border:1px solid var(--bdr3);background:linear-gradient(135deg,rgba(30,144,255,.04),rgba(0,255,229,.02));padding:1.75rem 2.25rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.hero::before{content:'$100K';position:absolute;right:-20px;top:-20px;font-family:'Black Ops One',sans-serif;font-size:160px;color:rgba(30,144,255,.03);line-height:1;pointer-events:none;}
+.hero::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.hero-grid{display:grid;grid-template-columns:1fr auto;gap:2.5rem;align-items:center;}
+.hero-label{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px;}
+.hero-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txt3);margin-bottom:18px;}
+.bar-outer{height:10px;background:var(--bg4);border:1px solid var(--bdr2);overflow:hidden;position:relative;}
+.bar-inner{height:100%;background:linear-gradient(90deg,var(--blue),var(--gold));transition:width 1.4s cubic-bezier(.4,0,.2,1);box-shadow:0 0 16px rgba(30,144,255,.5);}
+.bar-ticks{display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);margin-top:5px;}
+.hero-stats{display:flex;flex-direction:column;gap:8px;min-width:150px;}
+.hs{border:1px solid var(--bdr2);padding:12px 18px;background:var(--bg3);text-align:center;position:relative;overflow:hidden;}
+.hs::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.hs-v{font-family:'Black Ops One',sans-serif;font-size:34px;color:var(--gold);line-height:1;text-shadow:0 0 20px rgba(255,209,102,.3);}
+.hs-l{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+
+/* DEAL CARDS */
+.deal-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.dc{border:1px solid;padding:1.5rem;position:relative;overflow:hidden;text-align:center;}
+.dc::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.dc.closed{border-color:rgba(30,144,255,.3);background:rgba(30,144,255,.03);}
+.dc.closed::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.dc.contract{border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.03);}
+.dc.contract::after{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.dc.target{border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.03);}
+.dc.target::after{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.dc-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px;}
+.dc.closed .dc-lbl{color:var(--blue);}
+.dc.contract .dc-lbl{color:var(--cyan);}
+.dc.target .dc-lbl{color:var(--gold);}
+.dc-num{font-family:'Black Ops One',sans-serif;font-size:64px;line-height:1;}
+.dc.closed .dc-num{color:var(--blue);text-shadow:var(--blueglow);}
+.dc.contract .dc-num{color:var(--cyan);text-shadow:0 0 30px rgba(255,209,102,.4);}
+.dc.target .dc-num{color:var(--gold);text-shadow:0 0 30px rgba(255,209,102,.4);}
+.dc-sub{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt3);margin-top:6px;}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:1.5rem;}
+.met{background:var(--bg2);border:1px solid var(--bdr);padding:.875rem 1rem;position:relative;overflow:hidden;}
+.met::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.met.mb::before{background:var(--blue);}
+.met.mc::before{background:var(--cyan);}
+.met-l{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.met-v{font-family:'Black Ops One',sans-serif;font-size:32px;line-height:1;margin-bottom:2px;}
+.met-v.b{color:var(--blue);}
+.met-v.c{color:var(--cyan);}
+.met-s{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt3);}
+.met-bar{margin-top:8px;height:2px;background:var(--bg5);overflow:hidden;}
+.met-bar-fill{height:100%;transition:width .8s ease;}
+
+/* G2 */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+
+/* PIPELINE */
+.pipeline{background:var(--bg2);border:1px solid var(--bdr);padding:1rem 1.25rem;}
+.pipe-item{display:flex;align-items:center;gap:10px;padding:7px 8px;margin-bottom:4px;border:1px solid transparent;transition:all .15s;}
+.pipe-item:hover{border-color:var(--bdr2);background:var(--bg3);}
+.pipe-n{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);width:14px;text-align:right;}
+.pipe-dot{width:6px;height:6px;flex-shrink:0;}
+.pipe-name{font-size:12px;font-weight:600;color:var(--txt2);flex:1;}
+.pipe-bar-wrap{width:80px;height:3px;background:var(--bg5);overflow:hidden;}
+.pipe-bar-fill{height:100%;transition:width .8s ease;}
+.pipe-count{font-family:'Black Ops One',sans-serif;font-size:18px;width:28px;text-align:right;color:var(--txt);}
+
+/* FEED */
+.feed-box{background:var(--bg2);border:1px solid var(--bdr);padding:1rem 1.25rem;max-height:300px;overflow-y:auto;}
+.feed-box::-webkit-scrollbar{width:2px;}
+.feed-box::-webkit-scrollbar-thumb{background:var(--blue);}
+.feed-item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--bdr);}
+.feed-item:last-child{border-bottom:none;}
+.fi-icon{font-size:12px;flex-shrink:0;width:18px;text-align:center;margin-top:1px;}
+.fi-txt{flex:1;font-size:12px;font-weight:500;color:var(--txt2);line-height:1.5;}
+.fi-txt strong{color:var(--txt);}
+.fi-time{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);flex-shrink:0;margin-top:2px;}
+
+/* CALLERS */
+.callers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.caller{background:var(--bg2);border:1px solid;padding:1.25rem 1.5rem;position:relative;overflow:hidden;}
+.caller::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.caller.d{border-color:rgba(30,144,255,.3);}
+.caller.d::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.caller.y{border-color:rgba(255,209,102,.3);}
+.caller.y::after{background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.caller-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.c-av{width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-family:'Black Ops One',sans-serif;font-size:22px;flex-shrink:0;border:1px solid;}
+.caller.d .c-av{background:rgba(30,144,255,.06);border-color:rgba(30,144,255,.3);color:var(--blue);}
+.caller.y .c-av{background:rgba(255,209,102,.06);border-color:rgba(255,209,102,.3);color:var(--cyan);}
+.c-name{font-family:'Black Ops One',sans-serif;font-size:20px;letter-spacing:.06em;}
+.caller.d .c-name{color:var(--blue);}
+.caller.y .c-name{color:var(--cyan);}
+.c-role{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px;}
+.c-badge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:8px;padding:4px 10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid;}
+.caller.d .c-badge{color:var(--blue);border-color:rgba(30,144,255,.3);background:rgba(30,144,255,.06);}
+.caller.y .c-badge{color:var(--cyan);border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.06);}
+.c-crown{font-size:18px;}
+.c-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.cg{background:var(--bg3);padding:8px;text-align:center;border:1px solid var(--bdr);}
+.cg-l{font-family:'Share Tech Mono',monospace;font-size:7px;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.cg-v{font-family:'Black Ops One',sans-serif;font-size:22px;line-height:1;}
+.prog-row{display:flex;align-items:center;gap:8px;}
+.prog-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);flex-shrink:0;width:52px;text-align:right;}
+.prog-track{flex:1;height:5px;background:var(--bg5);border:1px solid var(--bdr);overflow:hidden;}
+.prog-fill{height:100%;transition:width 1s ease;}
+.caller.d .prog-fill{background:linear-gradient(90deg,var(--blue),var(--gold));box-shadow:0 0 8px rgba(30,144,255,.4);}
+.caller.y .prog-fill{background:linear-gradient(90deg,var(--cyan),#FFE599);box-shadow:0 0 8px rgba(255,209,102,.4);}
+.c-score-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--bdr);}
+.c-score-lbl{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;}
+.c-score-v{font-family:'Black Ops One',sans-serif;font-size:22px;}
+.caller.d .c-score-v{color:var(--blue);}
+.caller.y .c-score-v{color:var(--cyan);}
+
+/* BOTTOM GRID */
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:1.5rem;}
+.card{background:var(--bg2);border:1px solid var(--bdr);padding:1.125rem 1.5rem;}
+.tgt-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bdr);}
+.tgt-row:last-child{border-bottom:none;}
+.tgt-l{font-size:13px;font-weight:600;color:var(--txt2);}
+.tgt-r{display:flex;align-items:center;gap:8px;}
+.tgt-v{font-family:'Black Ops One',sans-serif;font-size:20px;color:var(--txt);}
+.tgt-g{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--txt3);}
+.tgt-s{font-family:'Share Tech Mono',monospace;font-size:8px;font-weight:700;padding:3px 8px;letter-spacing:.08em;text-transform:uppercase;border:1px solid;}
+.ts-b{border-color:rgba(255,61,90,.3);color:var(--red);background:var(--red2);}
+.ts-o{border-color:rgba(255,209,102,.3);color:var(--gold);background:var(--gold2);}
+.ts-a{border-color:rgba(30,144,255,.3);color:var(--blue);background:var(--blue2);}
+.team-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--bdr);}
+.team-row:last-child{border-bottom:none;}
+.t-av{width:36px;height:36px;border:1px solid;display:flex;align-items:center;justify-content:center;font-family:'Black Ops One',sans-serif;font-size:16px;flex-shrink:0;}
+.t-name{font-size:14px;font-weight:700;color:var(--txt);flex:1;}
+.t-role{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-top:1px;}
+.t-stat{font-family:'Black Ops One',sans-serif;font-size:18px;color:var(--blue);}
+.t-sub{font-family:'Share Tech Mono',monospace;font-size:8px;color:var(--txt3);text-align:right;}
+
+/* WEEK TABLE */
+.week-table{width:100%;border-collapse:collapse;margin-bottom:1.5rem;}
+.week-table th{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--bdr2);background:var(--bg2);}
+.week-table td{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--txt2);padding:8px 12px;border-bottom:1px solid var(--bdr);}
+.week-table td.b{color:var(--blue);font-weight:700;}
+.week-table td.c{color:var(--cyan);font-weight:700;}
+.week-table td.g{color:var(--gold);font-weight:700;}
+.week-table tr:hover td{background:var(--bg3);}
+.week-table tr.tot td{background:var(--bg3);border-top:1px solid var(--bdr2);}
+
+.err{background:rgba(255,61,90,.05);border:1px solid rgba(255,61,90,.15);padding:5px 12px;font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--red);margin-bottom:8px;display:none;letter-spacing:.06em;}
+
+footer{text-align:center;padding:1.25rem;border-top:1px solid var(--bdr3);background:var(--bg);}
+.fq{font-size:12px;font-style:italic;color:var(--txt3);margin-bottom:4px;}
+.fb{font-family:'Black Ops One',sans-serif;font-size:13px;letter-spacing:.16em;color:var(--blue);text-shadow:var(--blueglow);}
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="hl">CASH MAGNET HOMES</span><span>COMMAND CENTER</span><span class="hl">$100K CHALLENGE</span><span class="hot">DANYAL VS YUSUF</span><span class="hl">750 DIALS/DAY</span><span>FIND IT · LOCK IT · FLIP IT</span><span class="hl">NO EMOTION — JUST MATH</span><span class="hot">MARTIN + ZACK CLOSING</span><span class="hl">BRICK BY BRICK</span>
+    <span class="hl">CASH MAGNET HOMES</span><span>COMMAND CENTER</span><span class="hl">$100K CHALLENGE</span><span class="hot">DANYAL VS YUSUF</span><span class="hl">750 DIALS/DAY</span><span>FIND IT · LOCK IT · FLIP IT</span><span class="hl">NO EMOTION — JUST MATH</span><span class="hot">MARTIN + ZACK CLOSING</span><span class="hl">BRICK BY BRICK</span>
+  </div>
+</div>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <div class="logo-wrap">
+      <div class="logo-bracket">[</div>
+      <div class="logo-txt">CMH</div>
+      <div class="logo-bracket">]</div>
+    </div>
+    <div>
+      <div style="font-family:'Black Ops One',sans-serif;font-size:16px;letter-spacing:.06em;color:var(--txt);">Command Center</div>
+      <div class="brand-sub">Cash Magnet Homes · War Room + KPI</div>
+    </div>
+  </div>
+  <div class="hdr-center">
+    <div class="month-label" id="monthLabel">LOADING...</div>
+    <div class="month-sub">$100,000 CHALLENGE · BRICK BY BRICK</div>
+  </div>
+  <div class="hdr-r">
+    <div class="upd" id="lastUpd">Connecting...</div>
+    <button class="ref-btn" onclick="loadAll()">&#8635; REFRESH</button>
+    <div class="live-wrap"><div class="blink"></div>LIVE</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-label">Monthly Challenge Progress</div>
+        <div class="hero-sub" id="heroSub">Loading pipeline data...</div>
+        <div class="bar-outer"><div class="bar-inner" id="goalBar" style="width:0%"></div></div>
+        <div class="bar-ticks"><span>0 deals</span><span>2</span><span>4</span><span>6</span><span>7 deals &#128293;</span></div>
+      </div>
+      <div class="hero-stats">
+        <div class="hs"><div class="hs-v" id="heroDeals">--</div><div class="hs-l">Deals Closed</div></div>
+        <div class="hs"><div class="hs-v" id="heroDays">--</div><div class="hs-l">Days Left</div></div>
+        <div class="hs"><div class="hs-v" id="heroNeeded">--</div><div class="hs-l">Deals Needed</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEAL CARDS -->
+  <div class="slbl"><span class="b">&#9654;</span> Deal Scoreboard</div>
+  <div class="deal-cards">
+    <div class="dc closed">
+      <div class="dc-lbl">DEALS CLOSED</div>
+      <div class="dc-num" id="dc_closed">--</div>
+      <div class="dc-sub">This month · from GHL</div>
+    </div>
+    <div class="dc contract">
+      <div class="dc-lbl">UNDER CONTRACT</div>
+      <div class="dc-num" id="dc_contract">--</div>
+      <div class="dc-sub">Live in GHL pipeline</div>
+    </div>
+    <div class="dc target">
+      <div class="dc-lbl">MONTHLY TARGET</div>
+      <div class="dc-num">7</div>
+      <div class="dc-sub">Deals needed to win</div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="slbl"><span class="b">&#9654;</span> Live Numbers — BatchDialer</div>
+  <div class="err" id="bdErr">BatchDialer connection failed — retrying automatically</div>
+  <div class="metrics">
+    <div class="met mb">
+      <div class="met-l">Total Dials Today</div>
+      <div class="met-v b" id="m_dials">--</div>
+      <div class="met-s">Target: 750/day</div>
+      <div class="met-bar"><div class="met-bar-fill" id="m_dials_b" style="width:0%;background:var(--blue);box-shadow:0 0 5px rgba(30,144,255,.4);"></div></div>
+    </div>
+    <div class="met mc">
+      <div class="met-l">Contacts Reached</div>
+      <div class="met-v c" id="m_contacts">--</div>
+      <div class="met-s">Live connects today</div>
+      <div class="met-bar"><div class="met-bar-fill" id="m_contacts_b" style="width:0%;background:var(--cyan);"></div></div>
+    </div>
+    <div class="met mb">
+      <div class="met-l">Hot Leads</div>
+      <div class="met-v b" id="m_leads">--</div>
+      <div class="met-s">Sent to closers</div>
+      <div class="met-bar"><div class="met-bar-fill" id="m_leads_b" style="width:0%;background:var(--blue);"></div></div>
+    </div>
+    <div class="met mc">
+      <div class="met-l">Connect Rate</div>
+      <div class="met-v c" id="m_rate">--</div>
+      <div class="met-s">Target: 10%+</div>
+    </div>
+    <div class="met mb">
+      <div class="met-l">Offers Made</div>
+      <div class="met-v b" id="m_offers">--</div>
+      <div class="met-s">From GHL pipeline</div>
+    </div>
+  </div>
+
+  <!-- PIPELINE + FEED -->
+  <div class="g2">
+    <div>
+      <div class="slbl"><span class="b">&#9654;</span> GHL Pipeline — Live</div>
+      <div class="err" id="ghlErr">GHL connection failed — retrying automatically</div>
+      <div class="pipeline" id="pipeList"><div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--txt3);padding:2rem 0;text-align:center;">CONNECTING TO GHL...</div></div>
+    </div>
+    <div>
+      <div class="slbl"><span class="c">&#9654;</span> Live Activity Feed</div>
+      <div class="feed-box" id="feed"></div>
+    </div>
+  </div>
+
+  <!-- CALLERS -->
+  <div class="slbl"><span class="b">&#9654;</span> Callers — Head to Head — Auto from BatchDialer</div>
+  <div class="callers">
+    <div class="caller d">
+      <div class="caller-top">
+        <div class="c-av">D</div>
+        <div style="flex:1;"><div class="c-name">Danyal</div><div class="c-role">Caller · Seat 1 · $3/hr</div></div>
+        <div class="c-crown" id="d_crown"></div>
+        <div class="c-badge">&#9679; DIALING</div>
+      </div>
+      <div class="c-grid">
+        <div class="cg"><div class="cg-l">Dials</div><div class="cg-v" style="color:var(--blue);" id="d_dials">--</div></div>
+        <div class="cg"><div class="cg-l">Contacts</div><div class="cg-v" style="color:var(--txt);" id="d_contacts">--</div></div>
+        <div class="cg"><div class="cg-l">Hot Leads</div><div class="cg-v" style="color:var(--blue);" id="d_leads">--</div></div>
+        <div class="cg"><div class="cg-l">Connect %</div><div class="cg-v" style="color:var(--gold);" id="d_rate">--</div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-lbl" id="d_prog_lbl">-- / 375</div>
+        <div class="prog-track"><div class="prog-fill" id="d_prog" style="width:0%;"></div></div>
+      </div>
+      <div class="c-score-row">
+        <div class="c-score-lbl">Performance Score</div>
+        <div class="c-score-v" id="d_score">--</div>
+      </div>
+    </div>
+    <div class="caller y">
+      <div class="caller-top">
+        <div class="c-av" style="background:rgba(255,209,102,.06);border-color:rgba(255,209,102,.3);color:var(--cyan);">Y</div>
+        <div style="flex:1;"><div class="c-name" style="color:var(--cyan);">Yusuf</div><div class="c-role">Caller · Seat 2 · Day 1</div></div>
+        <div class="c-crown" id="y_crown"></div>
+        <div class="c-badge" style="color:var(--cyan);border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.06);">&#9733; NEW</div>
+      </div>
+      <div class="c-grid">
+        <div class="cg"><div class="cg-l">Dials</div><div class="cg-v" style="color:var(--cyan);" id="y_dials">--</div></div>
+        <div class="cg"><div class="cg-l">Contacts</div><div class="cg-v" style="color:var(--txt);" id="y_contacts">--</div></div>
+        <div class="cg"><div class="cg-l">Hot Leads</div><div class="cg-v" style="color:var(--cyan);" id="y_leads">--</div></div>
+        <div class="cg"><div class="cg-l">Connect %</div><div class="cg-v" style="color:var(--gold);" id="y_rate">--</div></div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-lbl" id="y_prog_lbl">-- / 375</div>
+        <div class="prog-track" style="border-color:rgba(255,209,102,.2);"><div class="prog-fill" id="y_prog" style="width:0%;"></div></div>
+      </div>
+      <div class="c-score-row" style="border-top-color:rgba(255,209,102,.15);">
+        <div class="c-score-lbl">Performance Score</div>
+        <div class="c-score-v" style="color:var(--cyan);" id="y_score">--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TARGETS + TEAM -->
+  <div class="bottom-grid">
+    <div class="card">
+      <div class="slbl" style="margin-bottom:10px;"><span class="b">&#9654;</span> Daily Targets</div>
+      <div class="tgt-row"><div class="tgt-l">Total dials</div><div class="tgt-r"><div class="tgt-v" id="t_dials">--</div><div class="tgt-g">/ 750</div><div class="tgt-s ts-b" id="ts_dials">--</div></div></div>
+      <div class="tgt-row"><div class="tgt-l">Contacts reached</div><div class="tgt-r"><div class="tgt-v" id="t_contacts">--</div><div class="tgt-g">/ 75</div><div class="tgt-s ts-b" id="ts_contacts">--</div></div></div>
+      <div class="tgt-row"><div class="tgt-l">Hot leads</div><div class="tgt-r"><div class="tgt-v" id="t_leads">--</div><div class="tgt-g">/ 5</div><div class="tgt-s ts-b" id="ts_leads">--</div></div></div>
+      <div class="tgt-row"><div class="tgt-l">Offers made</div><div class="tgt-r"><div class="tgt-v" id="t_offers">--</div><div class="tgt-g">/ 3</div><div class="tgt-s ts-b" id="ts_offers">--</div></div></div>
+      <div class="tgt-row"><div class="tgt-l">Deals closed (month)</div><div class="tgt-r"><div class="tgt-v" id="t_deals">--</div><div class="tgt-g">/ 7</div><div class="tgt-s ts-b" id="ts_deals">--</div></div></div>
+    </div>
+    <div class="card">
+      <div class="slbl" style="margin-bottom:10px;"><span class="c">&#9654;</span> Team — This Month</div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:rgba(30,144,255,.3);color:var(--blue);">S</div>
+        <div style="flex:1;"><div class="t-name">Siraj</div><div class="t-role">Owner</div></div>
+        <div style="text-align:right;"></div>
+      </div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:rgba(30,144,255,.3);color:var(--blue);">M</div>
+        <div style="flex:1;"><div class="t-name">Martin</div><div class="t-role">Primary Closer</div></div>
+        <div style="text-align:right;"><div class="t-stat" id="m_deals">-- deals</div><div class="t-sub">This month</div></div>
+      </div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:rgba(255,209,102,.3);color:var(--cyan);">Z</div>
+        <div style="flex:1;"><div class="t-name">Zack</div><div class="t-role">Backup Closer</div></div>
+        <div style="text-align:right;"><div class="t-stat" id="z_deals">-- deals</div><div class="t-sub">This month</div></div>
+      </div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:rgba(30,144,255,.2);color:var(--blue);">D</div>
+        <div style="flex:1;"><div class="t-name">Danyal</div><div class="t-role">Caller · Seat 1</div></div>
+        <div style="text-align:right;"><div class="t-stat" style="color:var(--blue);font-size:14px;" id="d_total_team">-- dials</div><div class="t-sub">Today</div></div>
+      </div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:rgba(255,209,102,.2);color:var(--cyan);">Y</div>
+        <div style="flex:1;"><div class="t-name">Yusuf</div><div class="t-role">Caller · Seat 2</div></div>
+        <div style="text-align:right;"><div class="t-stat" style="color:var(--cyan);font-size:14px;" id="y_total_team">-- dials</div><div class="t-sub">Today</div></div>
+      </div>
+      <div class="team-row">
+        <div class="t-av" style="border-color:var(--bdr);color:var(--txt3);border-style:dashed;">+</div>
+        <div style="flex:1;"><div class="t-name" style="color:var(--txt3);">Dispo Person</div><div class="t-role">Hiring on Upwork</div></div>
+        <div style="font-size:11px;color:var(--txt3);font-style:italic;">Soon</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEEKLY TABLE -->
+  <div class="slbl"><span class="b">&#9654;</span> Weekly KPI — Auto-saves while dashboard is open</div>
+  <table class="week-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th style="color:var(--blue);">D Dials</th><th>D Contacts</th><th style="color:var(--blue);">D Leads</th>
+        <th style="color:var(--cyan);">Y Dials</th><th>Y Contacts</th><th style="color:var(--cyan);">Y Leads</th>
+        <th>Total</th><th>Connect %</th><th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="weekBody">
+      <tr><td colspan="10" style="text-align:center;color:var(--txt3);font-family:'Share Tech Mono',monospace;font-size:10px;padding:2rem;">DASHBOARD MUST STAY OPEN TO BUILD WEEKLY HISTORY — AUTO-SAVES EVERY 3 MIN</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<footer>
+  <div class="fq">"Discipline closes deals. Consistency builds empires."</div>
+  <div class="fb">Cash Magnet Homes · Command Center</div>
+</footer>
+
+<script>
+var GHL_KEY='pit-36618f98-145e-4840-9a80-54159c1cfd8d';
+var GHL_LOC='04Knz6dROUbRHdLQdGKn';
+var GHL_PIPE='YS3VYTmff5mWfR0ewzV2';
+var BD_KEY='afc5eda5-c2fc-4ae4-9754-c92002b2d19b';
+var GOAL_DEALS=7,DIAL_TGT=750;
+var STAGES=[
+  {n:'New Hot Lead',c:'#1E90FF'},{n:'Martin Working',c:'#5BB0FF'},
+  {n:'Zack Working',c:'#FFD166'},{n:'Offer Made',c:'#0E70EE'},
+  {n:'Negotiating',c:'#FF3D5A'},{n:'Under Contract',c:'#1E90FF'},
+  {n:'Dispo',c:'#5BB0FF'},{n:'Buyer Found',c:'#FFD166'},
+  {n:'Closing',c:'#FFD166'},{n:'Closed',c:'#1E90FF'}
+];
+
+// MONTHLY AUTO-RESET
+var now=new Date();
+var currentMonth=now.getMonth()+'-'+now.getFullYear();
+var storedMonth=localStorage.getItem('cmh_month_v2');
+if(storedMonth && storedMonth!==currentMonth){
+  localStorage.removeItem('cmh_kpi_blue');
+  console.log('New month detected — KPI history reset');
+}
+localStorage.setItem('cmh_month_v2',currentMonth);
+
+var kpiHistory=JSON.parse(localStorage.getItem('cmh_kpi_blue')||'[]');
+var feedItems=[];
+var closedCount=0,contractCount=0,martinDeals=0,zackDeals=0;
+
+function pct(a,b){return b>0?Math.round((a/b)*100)+'%':'0%';}
+function nowTime(){return new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});}
+function todayStr(){return new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});}
+function score(d,c,l){return d*1+c*5+l*20;}
+function s(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+
+function setTgt(id,val,tgt){
+  var el=document.getElementById(id);if(!el)return;
+  var p=val/tgt;
+  if(p>=1){el.textContent='HIT';el.className='tgt-s ts-a';}
+  else if(p>=0.7){el.textContent='CLOSE';el.className='tgt-s ts-o';}
+  else{el.textContent='BEHIND';el.className='tgt-s ts-b';}
+}
+
+function addFeed(icon,txt){
+  feedItems.unshift({icon:icon,txt:txt,time:nowTime()});
+  if(feedItems.length>40)feedItems=feedItems.slice(0,40);
+  var el=document.getElementById('feed');
+  el.innerHTML=feedItems.slice(0,25).map(function(f){
+    return '<div class="feed-item"><div class="fi-icon">'+f.icon+'</div><div class="fi-txt">'+f.txt+'</div><div class="fi-time">'+f.time+'</div></div>';
+  }).join('');
+}
+
+// Set month label dynamically
+var monthName=now.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+s('monthLabel',monthName);
+
+function updateHero(){
+  var daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  var today=new Date();
+  var dLeft=Math.max(0,daysInMonth-today.getDate());
+  var dNeeded=Math.max(0,GOAL_DEALS-closedCount);
+  var pct2=Math.min(100,Math.round((closedCount/GOAL_DEALS)*100));
+  var mn=today.toLocaleDateString('en-US',{month:'long'});
+  s('heroDeals',closedCount);
+  s('heroDays',dLeft);
+  s('heroNeeded',dNeeded);
+  s('heroSub',closedCount+' deals closed -- '+contractCount+' under contract -- '+dNeeded+' more to win '+mn);
+  document.getElementById('goalBar').style.width=pct2+'%';
+  s('dc_closed',closedCount);
+  s('dc_contract',contractCount);
+  s('t_deals',closedCount);
+  setTgt('ts_deals',closedCount,GOAL_DEALS);
+  s('m_deals',martinDeals+' deals');
+  s('z_deals',zackDeals+' deals');
+}
+
+async function loadGHL(){
+  try{
+    var res=await fetch('https://services.leadconnectorhq.com/opportunities/search?pipeline_id='+GHL_PIPE+'&location_id='+GHL_LOC+'&limit=100',{
+      headers:{'Authorization':'Bearer '+GHL_KEY,'Version':'2021-07-28','Content-Type':'application/json'}
+    });
+    if(!res.ok)throw new Error('GHL '+res.status);
+    var data=await res.json();
+    var opps=data.opportunities||data.data||[];
+    var sc={};
+    martinDeals=0;zackDeals=0;closedCount=0;contractCount=0;
+    opps.forEach(function(o){
+      var sn=o.stage&&o.stage.name?o.stage.name:'Unknown';
+      sc[sn]=(sc[sn]||0)+1;
+      if(sn==='Closed'){
+        closedCount++;
+        var owner=(o.assignedTo||o.owner||'').toLowerCase();
+        if(owner.includes('martin'))martinDeals++;
+        else if(owner.includes('zack'))zackDeals++;
+      }
+      if(sn==='Under Contract')contractCount++;
+    });
+    var om=sc['Offer Made']||0;
+    s('m_offers',om);s('t_offers',om);
+    setTgt('ts_offers',om,3);
+    var maxC=Math.max(1,Math.max.apply(null,STAGES.map(function(st){return sc[st.n]||0;})));
+    document.getElementById('pipeList').innerHTML=STAGES.map(function(st,i){
+      var c=sc[st.n]||0,w=Math.round((c/maxC)*100);
+      var hi=st.n==='Under Contract'||st.n==='Closed';
+      return '<div class="pipe-item"'+(hi?' style="border-color:rgba(30,144,255,.2);"':'')+'>'
+        +'<div class="pipe-n">'+(i+1)+'</div>'
+        +'<div class="pipe-dot" style="background:'+st.c+';box-shadow:0 0 5px '+st.c+'66;"></div>'
+        +'<div class="pipe-name">'+st.n+'</div>'
+        +'<div class="pipe-bar-wrap"><div class="pipe-bar-fill" style="width:'+w+'%;background:'+st.c+';"></div></div>'
+        +'<div class="pipe-count">'+c+'</div></div>';
+    }).join('');
+    document.getElementById('ghlErr').style.display='none';
+    updateHero();
+    addFeed('GHL','GHL synced -- <strong>'+opps.length+' opportunities</strong> -- '+closedCount+' closed -- '+contractCount+' under contract');
+  }catch(e){
+    document.getElementById('ghlErr').style.display='block';
+    document.getElementById('pipeList').innerHTML='<div style="font-family:\'Share Tech Mono\',monospace;font-size:10px;color:var(--txt3);padding:2rem 0;text-align:center;">AWAITING GHL CONNECTION...</div>';
+    addFeed('!!','GHL sync failed -- retrying in 3 minutes');
+  }
+}
+
+async function loadBD(){
+  try{
+    var res=await fetch('https://app.batchdialer.com/api/v1/campaigns',{
+      headers:{'x-api-key':BD_KEY,'Content-Type':'application/json'}
+    });
+    if(!res.ok)throw new Error('BD '+res.status);
+    var data=await res.json();
+    var camps=data.data||data.campaigns||data||[];
+    var tD=0,tC=0,tL=0,dD=0,dC=0,dL=0,yD=0,yC=0,yL=0;
+    if(Array.isArray(camps)&&camps.length){
+      camps.forEach(function(c){
+        var d=c.totalCalls||c.total_calls||c.dials||0;
+        var ct=c.totalContacts||c.total_contacts||c.contacts||0;
+        var l=c.totalLeads||c.total_leads||c.leads||0;
+        tD+=d;tC+=ct;tL+=l;
+        var n=(c.agentName||c.agent_name||c.name||'').toLowerCase();
+        if(n.includes('dan')){dD+=d;dC+=ct;dL+=l;}
+        else if(n.includes('yus')){yD+=d;yC+=ct;yL+=l;}
+        else{dD+=Math.floor(d/2);dC+=Math.floor(ct/2);dL+=Math.floor(l/2);yD+=Math.ceil(d/2);yC+=Math.ceil(ct/2);yL+=Math.ceil(l/2);}
+      });
+    }
+    var tRate=tD>0?Math.round((tC/tD)*100)+'%':'0%';
+    s('m_dials',tD||'0');s('m_contacts',tC||'0');s('m_leads',tL||'0');s('m_rate',tRate);
+    s('t_dials',tD);s('t_contacts',tC);s('t_leads',tL);
+    document.getElementById('m_dials_b').style.width=Math.min(100,Math.round((tD/DIAL_TGT)*100))+'%';
+    document.getElementById('m_contacts_b').style.width=Math.min(100,Math.round((tC/75)*100))+'%';
+    document.getElementById('m_leads_b').style.width=Math.min(100,Math.round((tL/5)*100))+'%';
+    setTgt('ts_dials',tD,DIAL_TGT);setTgt('ts_contacts',tC,75);setTgt('ts_leads',tL,5);
+    var dScore=score(dD,dC,dL),yScore=score(yD,yC,yL);
+    s('d_dials',dD||'0');s('d_contacts',dC||'0');s('d_leads',dL||'0');s('d_rate',pct(dC,dD));
+    s('d_total_team',dD+' dials');
+    document.getElementById('d_prog').style.width=Math.min(100,Math.round((dD/375)*100))+'%';
+    s('d_prog_lbl',dD+' / 375');s('d_score',dScore.toLocaleString());
+    s('y_dials',yD||'0');s('y_contacts',yC||'0');s('y_leads',yL||'0');s('y_rate',pct(yC,yD));
+    s('y_total_team',yD+' dials');
+    document.getElementById('y_prog').style.width=Math.min(100,Math.round((yD/375)*100))+'%';
+    s('y_prog_lbl',yD+' / 375');s('y_score',yScore.toLocaleString());
+    document.getElementById('d_crown').textContent=dScore>yScore&&dScore>0?'👑':'';
+    document.getElementById('y_crown').textContent=yScore>dScore&&yScore>0?'👑':'';
+    document.getElementById('bdErr').style.display='none';
+    // AUTO-SAVE to weekly history
+    var today=todayStr();
+    var existing=kpiHistory.find(function(h){return h.date===today;});
+    if(existing){existing.dD=dD;existing.dC=dC;existing.dL=dL;existing.yD=yD;existing.yC=yC;existing.yL=yL;}
+    else kpiHistory.push({date:today,dD:dD,dC:dC,dL:dL,yD:yD,yC:yC,yL:yL});
+    if(kpiHistory.length>35)kpiHistory=kpiHistory.slice(-35);
+    localStorage.setItem('cmh_kpi_blue',JSON.stringify(kpiHistory));
+    renderWeek();
+    addFeed('BD','BatchDialer synced -- <strong>'+tD+' dials</strong> -- '+tC+' contacts -- '+tL+' hot leads -- '+tRate+' connect rate');
+  }catch(e){
+    document.getElementById('bdErr').style.display='block';
+    addFeed('!!','BatchDialer sync failed -- retrying in 3 minutes');
+  }
+}
+
+function renderWeek(){
+  var week=kpiHistory.slice(-7);
+  var tbody=document.getElementById('weekBody');
+  if(!week.length){
+    tbody.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--txt3);font-family:\'Share Tech Mono\',monospace;font-size:10px;padding:2rem;">KEEP DASHBOARD OPEN -- AUTO-SAVES EVERY 3 MIN</td></tr>';
+    return;
+  }
+  var tD=0,tC=0,tL=0;
+  var rows=week.map(function(d){
+    var tot=(d.dD||0)+(d.yD||0),c=(d.dC||0)+(d.yC||0),l=(d.dL||0)+(d.yL||0);
+    var r=tot>0?Math.round((c/tot)*100)+'%':'0%';
+    var hit=tot>=750;
+    tD+=tot;tC+=c;tL+=l;
+    return '<tr><td style="color:var(--txt3);">'+d.date+'</td>'
+      +'<td class="b">'+(d.dD||0)+'</td><td>'+(d.dC||0)+'</td><td class="b">'+(d.dL||0)+'</td>'
+      +'<td class="c">'+(d.yD||0)+'</td><td>'+(d.yC||0)+'</td><td class="c">'+(d.yL||0)+'</td>'
+      +'<td class="g">'+tot+'</td><td>'+r+'</td>'
+      +'<td><span style="font-family:\'Share Tech Mono\',monospace;font-size:8px;padding:2px 8px;border:1px solid;'+(hit?'border-color:rgba(30,144,255,.3);color:var(--blue);':'border-color:rgba(255,61,90,.3);color:var(--red);')+'">'+( hit?'HIT':'MISSED')+'</span></td>'
+      +'</tr>';
+  });
+  var avgR=tD>0?Math.round((tC/tD)*100)+'%':'0%';
+  rows.push('<tr class="tot"><td style="color:var(--blue);font-family:\'Share Tech Mono\',monospace;font-size:9px;">WEEK TOTAL</td><td class="b" colspan="3">'+tD+' dials</td><td colspan="3" class="c">'+tC+' contacts</td><td class="g">'+tL+' leads</td><td>'+avgR+'</td><td></td></tr>');
+  tbody.innerHTML=rows.join('');
+}
+
+async function loadAll(){
+  s('lastUpd','Refreshing...');
+  addFeed('>>','Auto-refresh -- pulling from GHL + BatchDialer');
+  await Promise.all([loadGHL(),loadBD()]);
+  s('lastUpd','Updated '+nowTime());
+}
+
+// BOOT
+addFeed('>>','COMMAND CENTER LIVE -- '+monthName);
+addFeed('**','Yusuf -- Seat 2 activated');
+addFeed('!!','Goal: 7 deals this month -- Brick by brick');
+renderWeek();
+loadAll();
+setInterval(loadAll,180000);
+</script>
+</body>
+</html>
